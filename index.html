@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Drawing Pad</title>
+
+    <style>
+        body{
+            text-align:center;
+            font-family: Arial;
+            background:#f2f2f2;
+        }
+
+        svg{
+            border:3px solid black;
+            background:white;
+            cursor:crosshair;
+        }
+
+        button{
+            margin:10px;
+            padding:8px 16px;
+            font-size:16px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>SVG Drawing Pad</h2>
+
+<button onclick="clearPad()">🗑 Clear</button>
+<br><br>
+
+<svg id="pad" width="600" height="400"></svg>
+
+<script>
+let pad = document.getElementById("pad");
+let drawing = false;
+let line;
+
+
+pad.onmousedown = function(e){
+    drawing = true;
+
+    line = document.createElementNS("http://www.w3.org/2000/svg","polyline");
+    line.setAttribute("fill","none");
+    line.setAttribute("stroke","black");
+    line.setAttribute("stroke-width","3");
+
+    pad.appendChild(line);
+}
+
+pad.onmousemove = function(e){
+    if(!drawing) return;
+
+    let pts = line.getAttribute("points") || "";
+    line.setAttribute("points", pts + e.offsetX + "," + e.offsetY + " ");
+}
+
+
+pad.onmouseup = function(){
+    drawing = false;
+}
+
+
+function clearPad(){
+    pad.innerHTML = "";
+}
+</script>
+
+</body>
+</html>
